@@ -1,0 +1,27 @@
+# -------------------------------------------------------------------
+# Backlift config.yml file. This file can be used to customize how 
+# your application is packaged when you run backlift push.
+# -------------------------------------------------------------------
+
+# scripts: These javascript files will be packaged and linked in 
+# order. File paths should be specified relative to the project root.
+# They should not be compressed. The * will match any string and **
+# will match any path.
+
+scripts:
+- /js/backlift-reloader.js
+- /js/jquery*.js
+- /js/bootstrap.js
+- /js/app.js
+- /js/searchhi_slim.js
+# - /**/*.js
+
+# styles: These stylesheets will be packaged and linked in order, 
+# similar to scripts.
+
+styles:
+- /css/bootstrap.css
+- /css/bootstrap-responsive.css
+# - /css/arvo.css
+- /css/style.css
+# - /**/*.css

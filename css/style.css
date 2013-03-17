@@ -1,0 +1,120 @@
+@charset "UTF-8";
+/* CSS Document */
+  
+/*hidden on load*/
+#cropLogForm,
+#actionLogForm,
+#quickNoteForm, 
+#chronOldest,
+#chronNewest {
+    display: none;
+}
+
+/*.hidden {
+    display: none;
+}*/
+
+.cropContainer {
+    border: 1px 0px 1px 0px;
+    border: #E7DFD7 solid;
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 20px 0px;
+}
+
+.actionContainer {
+    padding: 0px 0px 0px 15px;
+    margin: 10px 0px 20px 0px;
+    border-left: 3px solid;
+    border-color: #107710;
+}
+
+.quickContainer {
+    padding: 0px 0px 0px 15px;
+    margin: 10px 0px 0px 0px;
+    border-left: 3px solid;
+    border-color: #107710;
+}
+
+/*for search*/
+
+span.searchword { 
+    background-color: #C5E3BF; 
+}
+
+
+/*styling*/
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #3B3B3B;
+}
+
+h1, h2, h3, h4, h5 {
+    text-transform: uppercase;
+    font-family: 'Arvo', serif;
+    font-weight: normal;
+    color: #107710;
+}
+
+em {
+    color:  #3B3B3B;
+}
+
+a {
+    text-decoration: none;
+    color: #107710;
+}
+
+/* Header */
+
+#header {
+    margin-top: 45px;
+    margin-bottom: 30px;
+}
+
+#header h1 {
+    text-transform: lowercase;
+    font-size: 3.8em;
+}
+
+#header p {
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+    font-family: 'Arvo', serif;
+    color: #3B3B3B;
+}
+
+#header p a {
+    color: #3B3B3B;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0 0 0px 0px;
+}
+
+li {
+    border-bottom: 1px solid #E7DFD7;
+    margin: 0px 0px;
+    padding: 10px 0px;
+    border-left: none;
+    list-style-type: none;
+    line-height: 180%;
+}
+
+li a {
+    color: #3B3B3B;
+}
+
+/* Form */
+
+.form {
+    margin-bottom: 15px;
+    padding: 30px 40px;
+    border: 1px solid #E7DFD7;
+    border-radius: 8px;
+    background: #F8F8F8;
+}
+
+

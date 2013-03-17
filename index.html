@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    {{$ styles }} 
+    {{$ scripts }} 
+    <link href="//fonts.googleapis.com/css?family=Arvo|Open+Sans:400,300,600,700" rel="stylesheet" type="text/css" />
+    
+    <title>Field Notes :: A Backlift App</title>
+
+
+
+
+  </head>
+  <body>
+    <div class="container">
+
+      <!-- Head -->
+      <div class="row">
+        <div id="header" class="span12">
+          <h1><a href="#"><em>The </em>Field Notes App</a></h1>
+          <p>Log it here, so you can track it year after year</a></p>
+
+          <p>
+            <a id="cropLogTrigger">[New Crop Log]</a> 
+            <a id="actionLogTrigger">[New Action Log]</a> 
+            <a id="quickNoteTrigger">[Quick Note]</a>
+          </p>
+
+        </div>
+      </div>
+      
+      <div class="row"> <!--content and forms-->
+
+
+
+        <div class="span5 pull-right">
+
+          <form id="cropLogForm" class="form">
+            <h2>Crop Log</h2>
+
+            <p>
+              <a class="formQ" 
+              rel="popover"
+              data-trigger="hover"
+              data-placement="left" 
+              data-content="This will post to the gardenLog by default. The location cannot be changed."
+              >[?]</a>
+            
+              <b><!--default posting location will cannot be changed ATT-->
+              <span class="toLocation">Posting To: gardenLog</span><br>
+            </b></p>
+
+            Date: Auto <br>
+            Time: Auto <br>
+            Weather: Auto <br>
+            Temp: Auto <br>
+            RainFall: Auto <br>
+
+
+            Title: (Crop) <br>
+            <input type="text" id="imputLogTitle"><br>
+            
+            <textarea id="imputLogBox" rows="4"></textarea><br> 
+
+            <button type="button" class="btn cancelForm">Cancel</button>
+            <button type="button" class="btn clearForm">Reset</button>           
+            <button type="button" class="btn btn btn-success" id="submitCropLog">Log 'Em!</button>
+          </form>
+
+
+          <form id="actionLogForm" class="form">
+            <h2>Action Log</h2>
+            
+            <p>
+              <a class="formQ" 
+              rel="popover"
+              data-trigger="hover"
+              data-placement="left" 
+              data-content='By default all actions will post to gardenLog, If you wish to nest an action select "Log Action" under the desired post and the location will update.'
+              >[?]</a>
+
+            <b><!-- default posting location will change if it is triggerd by function logAnAction() -->
+              <span class="toLocation" id="actionLogParent">Posting To: gardenLog</span>
+            </b></p>
+
+            <!--Default parent is gardenLog -->
+            <input id="imputActionParentId" type="hidden" value="gardenLog">
+            <input id="imputActionParentTitle" type="hidden" value="Garden Log">
+            
+            Date: Auto <br>
+            Time: Auto <br>
+            Weather: Auto <br>
+            Temp: Auto <br>
+            RainFall: Auto <br>
+
+            Title: (Action)<br>
+            <input type="text" id="imputActionTitle"><br>
+            
+            <textarea id="imputActionBox" rows="4"></textarea><br> 
+            
+            <button type="button" class="btn cancelForm">Cancel</button>
+            <button type="button" class="btn clearForm">Reset</button>      
+            <button type="button" class="btn btn btn-success" id="submitActionLog">Post That Thing!</button>
+          </form>
+
+
+          <form id="quickNoteForm" class="form">
+            <h2>Quick Note</h2>
+
+            <p>
+              <a class="formQ" 
+              rel="popover"
+              data-trigger="hover"
+              data-placement="left" 
+              data-content='To post a Quick Note you must either choose a location from the dropdown menu or select "Quick Note" under the desired post and the location will update.'
+              >[?]</a>
+
+            <b><!-- default posting location is empty -->
+              <span class="toLocation" id="quickNoteParent">No location targeted</span><br>
+            </b></p>
+
+            <!--Default action is wait for imput from dropdown then set value-->
+            <!-- this will be populated if a pass through post is activated  -->
+            <input id="imputQuickParentId" type="hidden" value="">
+            <input id="imputQuickParentTitle" type="hidden" value="">
+
+            <select id="imputQuickDropdown">
+              <option value="" disabled="disabled" selected="selected">Select a Parent</option>
+              <!--Dropdown Populated by function populateQuickDropdown() -->
+            </select> <br>
+
+            Date: Auto <br>
+            Time: Auto <br>
+            Weather: Auto <br>
+            Temp: Auto <br>
+            RainFall: Auto <br>
+
+            <textarea id="imputQuickNoteBox" rows="4"></textarea><br>
+
+            <button type="button" class="btn cancelForm">Cancel</button>
+            <button type="button" class="btn clearForm">Reset</button>      
+            <button type="button" class="btn btn btn-success" id="submitQuickNote">Make that Note!</button>
+          </form>
+
+          <div id="Links">
+            <h3>Find</h3>
+
+              <!-- http://www.tedpavlic.com/post_simple_inpage_highlighting_example.php -->
+              <form name="searchhi" action="" onSubmit="localSearchHighlight(document.searchhi.h.value); return false;">
+                <input name="h" placeholder="Enter a term to be highlighted" type="text" /><br>
+                <input type="button" class="btn" value="Highlight" onclick="localSearchHighlight(document.searchhi.h.value);" />
+                <input type="button" class="btn" value="Remove Highlight" onclick="unhighlight(document.getElementsByTagName('body')[0])" />
+              </form>
+            
+            <h3>Page Views</h3>
+              <ul>
+                <li><a id="cropView">By Crop</a></li>
+                <li><a id="cronNewestView">Newset First</a></li>
+                <li><a id="cronOldestView">Oldest First</a></li>
+              </ul>
+            <h3>Crop Links</h3>
+              <ul id="ulCropLinks">
+              </ul>
+            <h3>To Do</h3>
+              <ul>
+                <li>Add date and times</li>
+                <li>Add more imput fields</li>
+                <li>Integrate with Facebook API</li>
+                <li>Integrate with weather API</li>
+                
+              </ul>
+          </div>
+
+          &nbsp;
+        </div>
+
+                  
+        <div id="gardenLog" class="span7"></div>
+
+        <div id="chronOldest" class="span7"></div>
+
+        <div id="chronNewest" class="span7"></div>
+
+
+        <div id="footer" class="span7">
+          <hr>
+          <p>Code by Christopher Fryman NSS2013 ::
+            <!-- <a onclick="purgeDatabase()">[purgeDatabase()]</a> -->
+        </div>
+
+
+      </div> <!--End content and forms-->
+    </div> <!--end container-->
+  </body>
+</html>
