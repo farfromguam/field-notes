@@ -14,7 +14,8 @@ scripts:
 - /js/bootstrap.js
 - /js/app.js
 - /js/searchhi_slim.js
-# - /**/*.js
+- /js/date.js
+- /**/*.js
 
 # styles: These stylesheets will be packaged and linked in order, 
 # similar to scripts.

@@ -10,6 +10,11 @@ $(document).ready(function () {
   //Listeners
   //=========
 
+  $("#manage").click(function() {
+    $(".manage").css("display", "inline");
+  });
+
+  // FORM TRIGGERS NAV UNDER PAGE TITLE
 
   $("#cropLogTrigger").click(function () {
     //clear first then show
@@ -29,6 +34,18 @@ $(document).ready(function () {
     toggleQuickNoteForm();
   }); 
 
+  // FORM CLEAR AND CANCEL
+
+  $(".cancelForm").click(function() {
+    hideAllFormsSlow();
+    resetAllForms();
+  });
+
+  $(".clearForm").click(function () {
+    resetAllForms();
+  });
+
+  // FORM SUBMIT ACTIONS
 
   $("#submitCropLog").click(function () {
     //set data
@@ -39,8 +56,14 @@ $(document).ready(function () {
       parentId: "gardenLog",
       parentTitle: "Garden Log",
       
-      title: $("#imputLogTitle").val(),
-      longText: $("#imputLogBox").val()
+      date: new Date().toString('MMM d, yyyy'),
+      time: new Date().toString('h:mm tt'),
+
+      title:        $("#imputLogTitle").val(), // common Name
+      strain:       $("#imputLogStrain").val(), 
+      harvestNotes: $("#imputLogHarvestNotes").val(),
+      flags:        $("#imputLogFlags").val(),
+      longText:     $("#imputLogLongText").val()
     
     }
     //post data
@@ -53,11 +76,16 @@ $(document).ready(function () {
       
       kind: "Action",
 
-      parentId: $("#imputActionParentId").val(),
+      parentId:    $("#imputActionParentId").val(),
       parentTitle: $("#imputActionParentTitle").val(),
       
-      title: $("#imputActionTitle").val(),
-      longText: $("#imputActionBox").val()
+      date: new Date().toString('MMM d, yyyy'),
+      time: new Date().toString('h:mm tt'),
+
+      workers:  $("#imputActionWorkers").val(),
+      items:    $("#imputActionItems").val(),
+      title:    $("#imputActionTitle").val(),
+      longText: $("#imputActionLongText").val()
     
     }
     //post data
@@ -73,30 +101,24 @@ $(document).ready(function () {
       parentId:    $("#imputQuickParentId").val(),
       parentTitle: $("#imputQuickParentTitle").val(),
      
+      date: new Date().toString('MMM d, yyyy'),
+      time: new Date().toString('h:mm tt'),
+
       title: "A note",
-      longText:    $("#imputQuickNoteBox").val()
+      longText: $("#imputQuickLongText").val()
     
     }
     //post data
     postNewFieldNote(imputData);
   }); 
 
+  // CHANGE PARENT ON DROPDOWN CHANGE
 
   $("#imputQuickDropdown").change(function () {
     //set parent to value of dropdown
     $("#imputQuickParentId").val( $("#imputQuickDropdown").val() );
     // alert that parent is changed
     $("#quickNoteParent").html("Posting To:");
-  });
-
-
-  $(".cancelForm").click(function() {
-    hideAllFormsSlow();
-    resetAllForms();
-  });
-
-  $(".clearForm").click(function () {
-    resetAllForms();
   });
 
   //PAGE VIEWS
@@ -112,7 +134,6 @@ $(document).ready(function () {
   $("#cronNewestView").click(function () {
     toggleChronNewestView();
   });
-
 
 }); // end document.ready
 
@@ -169,16 +190,19 @@ function deleteRecord(id) {
 }
 
 function purgeDatabase() {
-  $.ajax({
-    url: "backliftapp/fieldNotesData",
-    type: "GET",
-    success: function (data) {
-      for (i = 0; i < data.length; i++) { // clear each score record by record id
-        deleteRecord(data[i].id);
-      } // end for loop
-      location.reload;
-    } // end sucess
-  }); // end ajax get call
+  var conf = confirm("Are you sure you want to clear all the garden data");
+  if (conf == true) {
+    $.ajax({
+      url: "backliftapp/fieldNotesData",
+      type: "GET",
+      success: function (data) {
+        for (i = 0; i < data.length; i++) { // clear each score record by record id
+          deleteRecord(data[i].id);
+        } // end for loop
+        location.reload;
+      } // end sucess
+    }); // end ajax get call
+  } // end if 
 }
 
 //Display The data on site
@@ -203,10 +227,18 @@ function printCropToScreen(data) {
   $(
     '<div class="cropContainer" id="' + data.id + '">' + 
     '<h2><em>' + data.kind + '</em> :: ' + data.title + '</h2>' + 
-    '<p>' + data.longText + '</p>' +
+
+    '<ul>' +
+      '<li>Plant Strain: '  + data.strain + '</li>' +
+      '<li>Harvest Notes: ' + data.harvestNotes + '</li>' +
+      '<li>Remember!!! : '  + data.flags + '</li>' +
+    '</ul>' +
+
+    '<p>'+ data.longText + '</p>' +
+    
     '<a href="#actionLogForm" onclick="setActionLogParent(\'' + data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
     '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
-    '<a onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
+    '<a class="red manage" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
     '</div>'
   ).appendTo('#'+data.parentId);
 }
@@ -214,13 +246,16 @@ function printCropToScreen(data) {
 function printActionToScreen(data) {
   $(
     '<div class="actionContainer" id="' + data.id + '">' + 
-    '<h3><em>' + data.kind + '</em> :: ' + data.title + '</h3>' + 
+    '<h4><em>' + data.kind + '</em> :: ' + data.title + '</h4>' + 
 
+    '<p>Items: '     + data.items + '</p>' +
+    '<p>Workers: '   + data.workers + '</p>' +
+    
     '<p>' + data.longText + '</p>' +
 
     '<a href="#actionLogForm" onclick="setActionLogParent(\'' + data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
     '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
-    '<a onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
+    '<a class="red manage" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
     '</div>'
   ).appendTo('#'+data.parentId);
 }
@@ -229,7 +264,7 @@ function printQuickToScreen(data) {
   $(
     '<div class="quickContainer" id="' + data.id + '">' + 
     '<p>' + data.longText + '</p>' +
-    '<a onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
+    '<a class="red manage" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
     '</div>'
   ).appendTo('#'+data.parentId);
 }
@@ -237,8 +272,10 @@ function printQuickToScreen(data) {
 function printChronOldest(data) {
   $(
     '<div class="logByDate">' +
-    '<h5><em>' + 'Date' + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::</h5>' +
-    '<p>' + data.longText + '</p>' + 
+      '<h5><a href="#' + data.id + '" onclick="toggleCropView()">' +
+        '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
+      '</a></h5>' +
+      '<p>' + data.longText + '</p>' + 
     '</div>'
   ).appendTo('#chronOldest');
 }
@@ -246,8 +283,10 @@ function printChronOldest(data) {
 function printChronNewest(data) {
   $(
     '<div class="logByDate">' +
-    '<h5><em>' + 'Date' + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::</h5>' +
-    '<p>' + data.longText + '</p>' + 
+      '<h5><a href="#' + data.id + '" onclick="toggleCropView()">' +
+        '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
+      '</a></h5>' +
+      '<p>' + data.longText + '</p>' + 
     '</div>'
   ).prependTo('#chronNewest');
 }
@@ -277,14 +316,14 @@ function toggleChronNewestView() {
 //////////////////////////////////////////////
 
 function populateQuickDropdown(data) {
-  if (data.kind === "crop") {
+  if (data.kind === "Crop") {
     // open and close an option with the value of ID and html title of title
     $('<option/>').val(data.id).html(data.title).appendTo('#imputQuickDropdown');
   }
 }
 
 function populateCropLinks(data) {
-  if (data.kind === "crop") {
+  if (data.kind === "Crop") {
     $('<li><a href="#' + data.id + '" onclick="toggleCropView()">'+ data.title +'</li>').appendTo('#ulCropLinks');
   }
 }
@@ -347,13 +386,7 @@ function toggleQuickNoteForm() {
   $("#quickNoteForm").show(500);
 }
 
-function hideAllForms () {
-    $("#cropLogForm").hide();
-    $("#actionLogForm").hide();
-    $("#quickNoteForm").hide();
-}
-
-function hideAllFormsSlow () {
+function hideAllFormsSlow() {
     $("#cropLogForm").hide(500);
     $("#actionLogForm").hide(500);
     $("#quickNoteForm").hide(500);
@@ -378,10 +411,22 @@ function initPopovers() {
   $(".formQ").popover();
 }
 
+//Get current weather
+/////////////////////
 
+function getWeather() {
 
+  // http://api.openweathermap.org
+  var baseUrl   = "http://api.openweathermap.org/data/2.1";
+  var station   = "/weather/city/4644585";
+  var units     = "?units=imperial"; //imperial or metric
+  var mode      = "&mode=daily_compact"; // snapshot not forecast 
+  var type      = "&type=json"; // json or html
+  var url       = baseUrl + station + units + mode + type;
 
-
+  //http://api.openweathermap.org/data/2.1/weather/city/4644585?units=imperial&mode=daily_compact&type=json
+ 
+}
 
 
 

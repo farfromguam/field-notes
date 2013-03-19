@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <script>
+    
+    // //http://www.ncdc.noaa.gov/cdo-web/webservices/ncdcwebservices
+    // var baseUrl    = "http://www.ncdc.noaa.gov/cdo-services/services/";
+    // var dataSet    = "datasets/GHCND/";
+    // var gardenLoc  = "locations/ZIP:37212/";
+    // var startDate  = "20120318";
+    // var endDate    = "20120318";
+    // var output     = ".json";
+    // var ndcdToken  = "?token=vSrugJLhEDqQmIgGNyRDpKSLHOimnSiz";
+    // var weatherURL = baseUrl + dataSet + gardenLoc + output + ndcdToken;
+    // var weatherLink = '<a href="'+ weatherURL +'">go to it </a>'
+    // //cant get any thing newer than 2010
+
+
+    // //weatherbug
+    // var apiKey   = "A6337749373";
+    // var zipCode  = "37210";
+    // var UnitType = "UnitType=<UnitType>0"; //0-impereal 1-metric
+
+    // var urlCall = "http://"+apiKey+".api.wxbug.net/getLiveCompactWeatherRSS.aspx?ACode="+apiKey+"&zipCode="+zipCode+"&UnitType="+UnitType+"&OutputType=1"
+   
+
+    // http://api.openweathermap.org
+
+    var baseUrl = "http://api.openweathermap.org/data/2.1";
+    var station = "/weather/city/4644585";
+    var units   = "units=imperial"; //imperial or metric
+    var mode    = "mode=daily_compact"; // short 
+    var type    = "type=json"; // json or html
+
+    var weatherURL = baseUrl + station + '?' + units + '&' + mode + '&' + type
+    var weatherLink = '<a href="'+ weatherURL +'">go to it </a>'
+ 
+
+
+    </script>
+
+  </head>
+
+  <body>
+
+    <script>document.write(weatherLink)</script>
+
+
+
+  </body>
+  
+</html>
