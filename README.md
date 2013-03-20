@@ -1,9 +1,10 @@
 Field Notes
 -----------
 
-- An app to track your garden year after Year
-- A project for [Nashville Software School](http://nashvillesoftwareschool.com)
-- Play with it live @ https://fieldnotes-y8xlb.backliftapp.com/
+####This will soon be a dead branch
+
+- Apps current location @ https://fieldnotes-y8xlb.backliftapp.com/
+- Apps future location @ http://fieldnotes.frymanet.com/
 
 
 ###Goals of This Project:
