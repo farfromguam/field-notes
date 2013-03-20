@@ -82,9 +82,10 @@ $(document).ready(function () {
       date: new Date().toString('MMM d, yyyy'),
       time: new Date().toString('h:mm tt'),
 
+      title:    $("#imputActionTitle").val(),
       workers:  $("#imputActionWorkers").val(),
       items:    $("#imputActionItems").val(),
-      title:    $("#imputActionTitle").val(),
+      weather:  $("#imputActionWeather").val(),
       longText: $("#imputActionLongText").val()
     
     }
@@ -145,7 +146,6 @@ function getAllFieldNotes() {
     url: "backliftapp/fieldNotesData",
     type: "GET",
     success: function (data) {
-
       if (data.length === 0) {
         $("#gardenLog").append("Log a crop or a Action to see some data!")
       } else {
@@ -154,11 +154,9 @@ function getAllFieldNotes() {
           populateQuickDropdown(data[i]);
           populateCropLinks(data[i]);
         } // end loop
-
-      }// end else
-
-    } // end sucess
-  }); // end ajax get call
+      }  // end else
+    }   // end sucess
+  });  // end ajax get call
 }
 
 function postNewFieldNote(imputData) {
@@ -224,49 +222,87 @@ function printFieldNotesToScreen(data) {
 } 
 
 function printCropToScreen(data) {
-  $(
-    '<div class="cropContainer" id="' + data.id + '">' + 
+
+  // Display Required Information
+  $('<div class="cropContainer" id="' + data.id + '">' + 
     '<h2><em>' + data.kind + '</em> :: ' + data.title + '</h2>' + 
 
-    '<ul>' +
-      '<li>Plant Strain: '  + data.strain + '</li>' +
-      '<li>Harvest Notes: ' + data.harvestNotes + '</li>' +
-      '<li>Remember!!! : '  + data.flags + '</li>' +
-    '</ul>' +
-
-    '<p>'+ data.longText + '</p>' +
+      '<ul id="UL_' + data.id + '">' +
+        '<li>Plant Strain: ' + data.strain + '</li>' +
+      '</ul>' +
+      '<p>'+ data.longText + '</p>' +
     
-    '<a href="#actionLogForm" onclick="setActionLogParent(\'' + data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
-    '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
-    '<a class="red manage" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
-    '</div>'
-  ).appendTo('#'+data.parentId);
+    '<a href="#actionLogForm" onclick="setActionLogParent(\'' + 
+      data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
+    '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + 
+      data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
+    '<a class="red manage" onclick="deleteRecord(\'' + 
+      data.id + '\')">[Remove]</a>' +
+
+    '</div>').appendTo('#'+data.parentId);
+
+  // Display Non-Required Information
+  if (data.harvestNotes !== undefined) {
+    $('#UL_' + data.id).append('<li>Harvest Notes: ' + data.harvestNotes + '</li>');
+  }
+
+  if (data.flags !== undefined) {
+    $('#UL_' + data.id).append('<li>Remember!: ' + data.flags + '</li>');
+  }
+
 }
 
 function printActionToScreen(data) {
-  $(
-    '<div class="actionContainer" id="' + data.id + '">' + 
+
+  // Display Required Information
+  $('<div class="actionContainer" id="' + data.id + '">' + 
     '<h4><em>' + data.kind + '</em> :: ' + data.title + '</h4>' + 
 
-    '<p>Items: '     + data.items + '</p>' +
-    '<p>Workers: '   + data.workers + '</p>' +
-    
-    '<p>' + data.longText + '</p>' +
+      '<span id="SP_' + data.id + '"></span>' +
+      '<p>' + data.longText + '</p>' +
 
-    '<a href="#actionLogForm" onclick="setActionLogParent(\'' + data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
-    '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
-    '<a class="red manage" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
-    '</div>'
-  ).appendTo('#'+data.parentId);
+    '<a href="#actionLogForm" onclick="setActionLogParent(\'' + 
+      data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
+    '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + 
+      data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
+    '<a class="red manage" onclick="deleteRecord(\'' + 
+      data.id + '\')">[Remove]</a>' +
+
+    '</div>').appendTo('#'+data.parentId);
+
+  // Display Non-Required Information
+  if (data.items !== undefined) {
+    $('#SP_' + data.id).append('<p>Items: ' + data.items + '</p>');
+  }
+
+  if (data.workers !== undefined) {
+    $('#SP_' + data.id).append('<p>Workers: ' + data.workers + '</p>');
+  }
+
+  if (data.weather !== undefined) {
+    $('#SP_' + data.id).append('<p>Weather: ' + data.weather + '</p>');
+  }
+
 }
 
 function printQuickToScreen(data) {
-  $(
-    '<div class="quickContainer" id="' + data.id + '">' + 
-    '<p>' + data.longText + '</p>' +
-    '<a class="red manage" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
-    '</div>'
-  ).appendTo('#'+data.parentId);
+
+  // Display Required Information
+  $('<div class="quickContainer" id="' + data.id + '">' + 
+
+      '<span id="SP_' + data.id + '"></span>' +
+      '<p>' + data.longText + '</p>' +
+    
+    '<a class="red manage" onclick="deleteRecord(\'' + 
+      data.id + '\')">[Remove]</a>' +
+    
+    '</div>').appendTo('#'+data.parentId);
+
+  // Display Non-Required Information
+  if (data.weather !== undefined) {
+    $('#SP_' + data.id).append('<p>Weather: ' + data.weather + '</p>');
+  }
+
 }
 
 function printChronOldest(data) {
