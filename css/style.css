@@ -10,7 +10,7 @@
     display: none;
 }
 
-.manage {
+.hideShow {
     display: none;
 }
 
@@ -116,7 +116,7 @@ a {
 
 .form {
     margin-bottom: 25px;
-    padding: 15px 0px 25px 25px;
+    padding: 15px 25px 25px 25px;
     border: 1px solid #E7DFD7;
     background: #F8F8F8;
         -webkit-border-top-left-radius: 20px;
