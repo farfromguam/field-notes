@@ -6,11 +6,11 @@
     <script src='/js/backlift-reloader.js'></script>
 
     <!-- SCRIPTS -->
-    <script src='/js/jquery-1.9.1.min.js'></script>
-    <script src='/js/bootstrap.js'></script>
-    <script src='/js/app.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js'></script>
     <script src='/js/searchhi_slim.js'></script>
-    <script src='/js/date.js'></script>
+    <script src='/js/app.js'></script>
 
     <!-- STYLES -->
     <link href='/css/bootstrap.css' rel='stylesheet' type='text/css'>
@@ -61,15 +61,15 @@
             </b></p>
 
             Title: (Common Plant Name)<br>
-            <input type="text" id="imputLogTitle" class="input-block-level"><br>
+            <input type="text" id="imputLogTitle" class="input-block-level" placeholder="*Required"><br>
             Strain: (Specific Plant Type)<br>
-            <input type="text" id="imputLogStrain" class="input-block-level"><br>
+            <input type="text" id="imputLogStrain" class="input-block-level" placeholder="*Required"><br>
             Harvest Notes: <br>
             <input type="text" id="imputLogHarvestNotes" class="input-block-level"><br>
             Flags: (Important Things)<br>
             <input type="text" id="imputLogFlags" class="input-block-level"><br>
             Notes: <br>
-            <textarea id="imputLogLongText" rows="4" class="input-block-level"></textarea><br> 
+            <textarea id="imputLogLongText" rows="4" class="input-block-level" placeholder="*Required"></textarea><br> 
 
             <button type="button" class="btn cancelForm">Cancel</button>
             <button type="button" class="btn clearForm">Reset</button>           
@@ -97,7 +97,7 @@
             <input id="imputActionParentTitle" type="hidden" value="Garden Log">
             
             Title: (Action)<br>
-            <input type="text" id="imputActionTitle" class="input-block-level"><br>
+            <input type="text" id="imputActionTitle" class="input-block-level" placeholder="*Required"><br>
             Items:<br>
             <input type="text" id="imputActionItems" class="input-block-level"><br>
             Workers: <br>
@@ -110,7 +110,7 @@
             </label>
 
             Notes: <br>
-            <textarea id="imputActionLongText" rows="4" class="input-block-level"></textarea><br> 
+            <textarea id="imputActionLongText" rows="6" class="input-block-level" placeholder="*Required"></textarea><br> 
             
             <button type="button" class="btn cancelForm">Cancel</button>
             <button type="button" class="btn clearForm">Reset</button>      
@@ -118,7 +118,7 @@
           </form>
 
 
-          <form id="quickNoteForm" class="form">
+          <form id="quickNoteForm" name="quickNoteForm" class="form">
             <h2>Quick Note</h2>
 
             <p>
@@ -139,17 +139,17 @@
             <input id="imputQuickParentTitle" type="hidden" value="">
 
             <select id="imputQuickDropdown">
-              <option value="" disabled="disabled" selected="selected">Select a Parent</option>
+              <option value="" disabled="disabled" selected="selected">Select a Parent *Required</option>
               <!--Dropdown Populated by function populateQuickDropdown() -->
             </select> <br>
 
             <!-- Weather Checkbox -->
             <label class="checkbox">
-              <input type="checkbox" id="checkQuickWeather"> Include Weather from<a href="http://www.wunderground.com/?apiref=4903112f31fcb16b"> wnderground.com</a><br>
+              <input type="checkbox" id="checkQuickWeather"> Include weather from<a href="http://www.wunderground.com/?apiref=4903112f31fcb16b"> wnderground.com</a><br>
             </label>
 
             <!-- Notes -->
-            <textarea id="imputQuickLongText" rows="4" class="input-block-level"></textarea><br>
+            <textarea id="imputQuickLongText" rows="6" class="input-block-level" placeholder="*Required"></textarea><br>
 
             <button type="button" class="btn cancelForm">Cancel</button>
             <button type="button" class="btn clearForm">Reset</button>      
@@ -174,10 +174,6 @@
               </ul>
             <h3>Crop Links</h3>
               <ul id="ulCropLinks">
-              </ul>
-            <h3>To Do</h3>
-              <ul>
-                <li>Validate Required forms</li>
               </ul>
           </div>
 
