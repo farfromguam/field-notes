@@ -1,15 +1,14 @@
 $(document).ready(function () {
 
   //Onload do ASAP 
-  //==============
+  ////////////////
 
   getAllFieldNotes();
-
   initPopovers();
 
-  // Set variable for weather to live in
+  // Weather saving, setting and loading
   var currentWeatherCondtions = "Another Beautiful Day";
-  // Load weather from API
+  // //Load weather from API
   // getWeather();
   // function getWeather() {
   //   $.ajax({
@@ -26,7 +25,7 @@ $(document).ready(function () {
   // } // end getWeather
 
   //Listeners
-  //=========
+  ///////////
 
   $("#hideShow_Show").click(function() {
     $(".hideShow").css("display", "inline");
@@ -67,27 +66,32 @@ $(document).ready(function () {
     resetAllForms();
   });
 
-  // FORM SUBMIT ACTIONS
-
+  // CROP LOG SUBMIT ACTION
   $("#submitCropLog").click(function () {
-    //set data
-    var imputData = {
-      kind: "Crop",
-      parentId: "gardenLog",
-      parentTitle: "Garden Log",
-      date: new Date().toString('MMM d, yyyy'),
-      time: new Date().toString('h:mm tt'),
-      title:        $("#imputLogTitle").val(), // common Name
-      strain:       $("#imputLogStrain").val(), 
-      harvestNotes: $("#imputLogHarvestNotes").val(),
-      flags:        $("#imputLogFlags").val(),
-      longText:     $("#imputLogLongText").val()
-    }
-    //post data
-    postNewFieldNote(imputData);
+    // Check for imput in required fields
+    if( $.trim($('#imputLogTitle').val()).length    === 0 ||
+        $.trim($('#imputLogStrain').val()).length   === 0 ||
+        $.trim($('#imputLogLongText').val()).length === 0 ){
+      alert("Required fields cannot be empty");
+    } else {
+      //set data
+      var imputData = {
+        kind: "Crop",
+        parentId:     "gardenLog",
+        parentTitle:  "Garden Log",
+        date:         new Date().toString('MMM d, yyyy'),
+        time:          new Date().toString('h:mm tt'),
+        title:        $("#imputLogTitle").val(), // common Name
+        strain:       $("#imputLogStrain").val(), 
+        harvestNotes: $("#imputLogHarvestNotes").val(),
+        flags:        $("#imputLogFlags").val(),
+        longText:     $("#imputLogLongText").val()}
+      //post data
+      postNewFieldNote(imputData);
+    } // end else
   }); 
 
-  // listen for weather request on action form
+  // ACTION LOG FORM FUNCTIONS
   $("#checkActionWeather").change(function () {
     if ($("#checkActionWeather").is(":checked")) {
       $("#imputActionWeather").val(currentWeatherCondtions);
@@ -97,54 +101,57 @@ $(document).ready(function () {
   }); // end change
 
   $("#submitActionLog").click(function () {
-   
-    //set data
-    var imputData = {
-      kind:        "Action",
-      parentId:    $("#imputActionParentId").val(),
-      parentTitle: $("#imputActionParentTitle").val(),
-      date:        new Date().toString('MMM d, yyyy'),
-      time:        new Date().toString('h:mm tt'),
-      title:       $("#imputActionTitle").val(),
-      workers:     $("#imputActionWorkers").val(),
-      items:       $("#imputActionItems").val(),
-      weather:     $("#imputActionWeather").val(),
-      longText:    $("#imputActionLongText").val() 
-    }
-    //post data
-    postNewFieldNote(imputData);
+    // Check for imput in required fields
+    if( $.trim($('#imputActionTitle').val()).length    === 0 ||
+        $.trim($('#imputActionLongText').val()).length === 0 ){
+      alert("Required fields cannot be empty");
+    } else {
+      //set data
+      var imputData = {
+        kind:        "Action",
+        parentId:    $("#imputActionParentId").val(),
+        parentTitle: $("#imputActionParentTitle").val(),
+        date:        new Date().toString('MMM d, yyyy'),
+        time:        new Date().toString('h:mm tt'),
+        title:       $("#imputActionTitle").val(),
+        workers:     $("#imputActionWorkers").val(),
+        items:       $("#imputActionItems").val(),
+        weather:     $("#imputActionWeather").val(),
+        longText:    $("#imputActionLongText").val()}
+      //post data
+      postNewFieldNote(imputData);
+    } // end else
+  });
+
+  // QUICKNOTE FORM FUNCTIONS
+  $("#imputQuickDropdown").change(function () {
+    $("#imputQuickParentId").val( $("#imputQuickDropdown").val() );
+    $("#quickNoteParent").html("Posting To:");
   });
 
   $("#submitQuickNote").click(function () {
-    
-    // // include weather if requested
-    if ($("#checkQuickWeather").is(':checked')) {
-      var weatherOrNoWeather = currentWeatherCondtions; }
-
-    //set data
-    var imputData = {
-      kind: "Quick",
-      parentId:    $("#imputQuickParentId").val(),
-      parentTitle: $("#imputQuickParentTitle").val(),
-      date:        new Date().toString('MMM d, yyyy'),
-      time:        new Date().toString('h:mm tt'),
-      weather:     weatherOrNoWeather,
-      title:       "A note",
-      longText:    $("#imputQuickLongText").val()
-    
-    }
-    //post data
-    postNewFieldNote(imputData);
+    // Check for imput in required fields
+    if( $.trim($('#imputQuickParentId').val()).length === 0 ||
+        $.trim($('#imputQuickLongText').val()).length === 0 ){
+      alert("Required fields cannot be empty");
+    } else {
+      // include weather if requested
+      if ($("#checkQuickWeather").is(':checked')) {
+        var weatherOrNoWeather = currentWeatherCondtions; }
+      //set data
+      var imputData = {
+        kind: "Quick",
+        parentId:    $("#imputQuickParentId").val(),
+        parentTitle: $("#imputQuickParentTitle").val(),
+        date:        new Date().toString('MMM d, yyyy'),
+        time:        new Date().toString('h:mm tt'),
+        weather:     weatherOrNoWeather,
+        title:       "A note",
+        longText:    $("#imputQuickLongText").val()}
+      //post data
+      postNewFieldNote(imputData);
+     } // end else
   }); 
-
-  // CHANGE PARENT ON DROPDOWN CHANGE
-
-  $("#imputQuickDropdown").change(function () {
-    //set parent to value of dropdown
-    $("#imputQuickParentId").val( $("#imputQuickDropdown").val() );
-    // alert that parent is changed
-    $("#quickNoteParent").html("Posting To:");
-  });
 
   //PAGE VIEWS
 
@@ -162,8 +169,8 @@ $(document).ready(function () {
 
 }); // end document.ready
 
-//AJAX GET POST DELETE UPDATE
-//===========================
+//AJAX GET POST
+///////////////
 
 function getAllFieldNotes() {
   $.ajax({
@@ -199,6 +206,9 @@ function postNewFieldNote(imputData) {
     } // end sucess
   }); // end ajax post call
 }
+
+// Delete Functions
+///////////////////
 
 function deleteRecord(id) {
   $.ajax({
@@ -246,7 +256,7 @@ function purgeDatabase() {
 } // end ajax
 
 //Display The data on site
-//========================
+//////////////////////////
 
 function printEmptyMessage() {
   $("#gardenLog").append(
@@ -377,6 +387,22 @@ function printChronNewest(data) {
   ).prependTo('#chronNewest');
 }
 
+// Populate crop info - navagation and selection
+//////////////////////////////////////////////
+
+function populateQuickDropdown(data) {
+  if (data.kind === "Crop") {
+    // open and close an option with the value of ID and html title of title
+    $('<option/>').val(data.id).html(data.title).appendTo('#imputQuickDropdown');
+  }
+}
+
+function populateCropLinks(data) {
+  if (data.kind === "Crop") {
+    $('<li><a href="#' + data.id + '" onclick="toggleCropView()">'+ data.title +'</li>').appendTo('#ulCropLinks');
+  }
+}
+
 // View Switching
 /////////////////
 
@@ -396,59 +422,6 @@ function toggleChronNewestView() {
   $("#gardenLog").hide();
   $("#chronOldest").hide();
   $("#chronNewest").show();
-}
-
-// Populate crop into navagation and selection
-//////////////////////////////////////////////
-
-function populateQuickDropdown(data) {
-  if (data.kind === "Crop") {
-    // open and close an option with the value of ID and html title of title
-    $('<option/>').val(data.id).html(data.title).appendTo('#imputQuickDropdown');
-  }
-}
-
-function populateCropLinks(data) {
-  if (data.kind === "Crop") {
-    $('<li><a href="#' + data.id + '" onclick="toggleCropView()">'+ data.title +'</li>').appendTo('#ulCropLinks');
-  }
-}
-
-// Parent set and reset functions
-/////////////////////////////////
-
-function setActionLogParent(parentId, parentTitle) {
-  // set parent id
-  $("#imputActionParentId").val(parentId);
-  // set parent Title 
-  $("#imputActionParentTitle").val(parentTitle);
-  // tell user what the target is
-  $("#actionLogParent").html("Posting To: " + parentTitle)
-  toggleActionForm();
-}
-
-function setQuickNoteParent(parentId, parentTitle) {
-  // hide default dropdown
-  $("#imputQuickDropdown").hide();
-  // set parent id
-  $("#imputQuickParentId").val(parentId);
-  // set parent title
-  $("#imputQuickParentTitle").val(parentTitle);
-  // tell user what the target is
-  $("#quickNoteParent").html("Posting To: " + parentTitle);
-  toggleQuickNoteForm();
-}
-
-function resetActionLogParent() {
-  $("#imputActionParent").val("gardenLog");
-  $("#actionLogParent").html("Posting To: gardenLog")
-}
-
-function resetQuickNoteParent() {
-  //set all to default
-  $("#imputQuickDropdown").show();
-  $("#imputQuickParentId").val("");
-  $("#quickNoteParent").html("No location targeted")
 }
 
 //Form Functions
@@ -490,9 +463,47 @@ function resetAllForms() {
   resetActionLogParent();
 }
 
+// Parent set and reset functions
+/////////////////////////////////
+
+function setActionLogParent(parentId, parentTitle) {
+  // set parent id
+  $("#imputActionParentId").val(parentId);
+  // set parent Title 
+  $("#imputActionParentTitle").val(parentTitle);
+  // tell user what the target is
+  $("#actionLogParent").html("Posting To: " + parentTitle)
+  toggleActionForm();
+}
+
+function setQuickNoteParent(parentId, parentTitle) {
+  // hide default dropdown
+  $("#imputQuickDropdown").hide();
+  // set parent id
+  $("#imputQuickParentId").val(parentId);
+  // set parent title
+  $("#imputQuickParentTitle").val(parentTitle);
+  // tell user what the target is
+  $("#quickNoteParent").html("Posting To: " + parentTitle);
+  toggleQuickNoteForm();
+}
+
+function resetActionLogParent() {
+  $("#imputActionParent").val("gardenLog");
+  $("#actionLogParent").html("Posting To: gardenLog")
+}
+
+function resetQuickNoteParent() {
+  //set all to default
+  $("#imputQuickDropdown").show();
+  $("#imputQuickParentId").val("");
+  $("#quickNoteParent").html("No location targeted")
+}
+
 //MISC...
 /////////
 
 function initPopovers() {
   $(".formQ").popover();
 }
+
