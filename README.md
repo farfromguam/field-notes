@@ -5,7 +5,6 @@ Field Notes
 - A project for [Nashville Software School](http://nashvillesoftwareschool.com)
 - Play with it live @ https://fieldnotes-y8xlb.backliftapp.com/
 
-
 ###Goals of This Project:
 
 1.  Use The Tools and skills learned in the first three months
@@ -33,6 +32,7 @@ Field Notes
 
 3.  Build in support for annual garden refreshes
 
+4.  Leverage a free API, move away from a developer preview.
 
 History of Project
 ------------------
@@ -66,12 +66,6 @@ Not yet fully implimented
 
 Form Validation
 only certain fields are required for each log type. A field with a value of undefined is not displayed in the page views.
-
-The weather API
-Currently, the chosen API provides data over http and not https.
-The backlift service requires https and I am currently migrating to a new host.
-The target website will be at @ http://fieldnotes.frymanet.com/
-Once this is complete feature work, and refactoring will resume.
 
 
 
