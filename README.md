@@ -39,7 +39,7 @@ History of Project
 
 This project arose out of a need to remember what worked historically in our garden the years previously. A Log Book was suggested and it was an ideal soultion, a place to record data that could be looked over and added to. Through conversation with the garden planners I suggested that this Log Book could be built online and it could be a workable solution.
 
-I now have a *client* Taren Spence, She helps run this community garden near my house. Through conversations with her we disussed features of this web app and I was given a [rough scope of work](https://docs.google.com/file/d/1vTGu3K1QMnXq8YzdX1__k7Kvh58bQM7_Ju_w-GencE5vAnCfGidMc5Ca6Zkr/edit?usp=sharing).
+I now have a *client*, She helps run this community garden near my house. Through conversations with her we disussed features of this web app and I was given a [rough scope of work](https://docs.google.com/file/d/1vTGu3K1QMnXq8YzdX1__k7Kvh58bQM7_Ju_w-GencE5vAnCfGidMc5Ca6Zkr/edit?usp=sharing).
 
 The current State
 -----------------
@@ -60,12 +60,6 @@ The app is able to view this data in 3 ways
 The app is a single page app with navagation handled by Quick Links to the crops, when clicking on these links you are taken to the crop view, and crop entry.
 
 To aid in navagation A find feature is implemed, you stay on the current page and the term you searched for is highlighted, much like the default action of the browsers. In my experience most users do not know that browers have this ability and I wanted to provide this functionality for them.
-
-Not yet fully implimented
--------------------------
-
-Form Validation
-only certain fields are required for each log type. A field with a value of undefined is not displayed in the page views.
 
 
 
