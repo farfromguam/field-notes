@@ -7,11 +7,33 @@ $(document).ready(function () {
 
   initPopovers();
 
+  // Set variable for weather to live in
+  var currentWeatherCondtions = "Another Beautiful Day";
+  // Load weather from API
+  // getWeather();
+  // function getWeather() {
+  //   $.ajax({
+  //     url: "https://api.wunderground.com/api/75bb4d672596d1a6/conditions/q/TN/Nashville.json",
+  //     type: "GET",
+  //     dataType: "JSONP",
+  //     async: false,
+  //     success: function (data) {
+  //       currentWeatherCondtions = data.current_observation.weather + ', ' + 
+  //         data.current_observation.temperature_string +
+  //         ' Precip Today: ' + data.current_observation.precip_today_string; 
+  //     }  // end sucess
+  //   }); // end ajax
+  // } // end getWeather
+
   //Listeners
   //=========
 
-  $("#manage").click(function() {
-    $(".manage").css("display", "inline");
+  $("#hideShow_Show").click(function() {
+    $(".hideShow").css("display", "inline");
+  });
+
+  $("#hideShow_Hide").click(function() {
+    $(".hideShow").css("display", "none");
   });
 
   // FORM TRIGGERS NAV UNDER PAGE TITLE
@@ -50,63 +72,65 @@ $(document).ready(function () {
   $("#submitCropLog").click(function () {
     //set data
     var imputData = {
-      
       kind: "Crop",
-      
       parentId: "gardenLog",
       parentTitle: "Garden Log",
-      
       date: new Date().toString('MMM d, yyyy'),
       time: new Date().toString('h:mm tt'),
-
       title:        $("#imputLogTitle").val(), // common Name
       strain:       $("#imputLogStrain").val(), 
       harvestNotes: $("#imputLogHarvestNotes").val(),
       flags:        $("#imputLogFlags").val(),
       longText:     $("#imputLogLongText").val()
-    
     }
     //post data
     postNewFieldNote(imputData);
   }); 
 
+  // listen for weather request on action form
+  $("#checkActionWeather").change(function () {
+    if ($("#checkActionWeather").is(":checked")) {
+      $("#imputActionWeather").val(currentWeatherCondtions);
+    } else {
+      $("#imputActionWeather").val("");
+    } // end if else
+  }); // end change
+
   $("#submitActionLog").click(function () {
+   
     //set data
     var imputData = {
-      
-      kind: "Action",
-
+      kind:        "Action",
       parentId:    $("#imputActionParentId").val(),
       parentTitle: $("#imputActionParentTitle").val(),
-      
-      date: new Date().toString('MMM d, yyyy'),
-      time: new Date().toString('h:mm tt'),
-
-      title:    $("#imputActionTitle").val(),
-      workers:  $("#imputActionWorkers").val(),
-      items:    $("#imputActionItems").val(),
-      weather:  $("#imputActionWeather").val(),
-      longText: $("#imputActionLongText").val()
-    
+      date:        new Date().toString('MMM d, yyyy'),
+      time:        new Date().toString('h:mm tt'),
+      title:       $("#imputActionTitle").val(),
+      workers:     $("#imputActionWorkers").val(),
+      items:       $("#imputActionItems").val(),
+      weather:     $("#imputActionWeather").val(),
+      longText:    $("#imputActionLongText").val() 
     }
     //post data
     postNewFieldNote(imputData);
   });
 
   $("#submitQuickNote").click(function () {
+    
+    // // include weather if requested
+    if ($("#checkQuickWeather").is(':checked')) {
+      var weatherOrNoWeather = currentWeatherCondtions; }
+
     //set data
     var imputData = {
-     
       kind: "Quick",
-     
       parentId:    $("#imputQuickParentId").val(),
       parentTitle: $("#imputQuickParentTitle").val(),
-     
-      date: new Date().toString('MMM d, yyyy'),
-      time: new Date().toString('h:mm tt'),
-
-      title: "A note",
-      longText: $("#imputQuickLongText").val()
+      date:        new Date().toString('MMM d, yyyy'),
+      time:        new Date().toString('h:mm tt'),
+      weather:     weatherOrNoWeather,
+      title:       "A note",
+      longText:    $("#imputQuickLongText").val()
     
     }
     //post data
@@ -147,7 +171,7 @@ function getAllFieldNotes() {
     type: "GET",
     success: function (data) {
       if (data.length === 0) {
-        $("#gardenLog").append("Log a crop or a Action to see some data!")
+        printEmptyMessage();
       } else {
         for (var i = 0; i < data.length; i++) {
           printFieldNotesToScreen(data[i]);
@@ -181,11 +205,29 @@ function deleteRecord(id) {
     url: "backliftapp/fieldNotesData/" + id,
     type: "DELETE",
     success: function (data) {
-      console.log('deleted: ' + id);
       $('#' + id).hide();
+      $('.' + id).hide();
+      console.log('deleted: ' + id);
+      deleteChildrenOf(id);
     } // end sucess
-  }); // end ajax delete call
-}
+  }); // end ajax
+} // end function
+
+function deleteChildrenOf(id) {
+  $.ajax({ 
+    url: "backliftapp/fieldNotesData", 
+    type: "GET", 
+    success: function (data) {
+      // check each for parent match
+      for (var i = 0; i < data.length; i++) {
+        // if match is found
+        if (data[i].parentId === id) {
+          deleteRecord(data[i].id)
+        } // end if
+      } // end for
+    } // end success
+  }); // end ajax
+} // end function
 
 function purgeDatabase() {
   var conf = confirm("Are you sure you want to clear all the garden data");
@@ -194,17 +236,25 @@ function purgeDatabase() {
       url: "backliftapp/fieldNotesData",
       type: "GET",
       success: function (data) {
-        for (i = 0; i < data.length; i++) { // clear each score record by record id
+        // clear each one by one
+        for (i = 0; i < data.length; i++) {
           deleteRecord(data[i].id);
-        } // end for loop
-        location.reload;
+        } // end for
       } // end sucess
     }); // end ajax get call
   } // end if 
-}
+} // end ajax
 
 //Display The data on site
 //========================
+
+function printEmptyMessage() {
+  $("#gardenLog").append(
+    "<h3>Welcome,</h3><p>It appears that it is your first time here (or you hideShowd to break something.) Either way welcome. Have a look around and get comfortable. Your main navagatio and log entry is handled by the links above they look like this: [words in a box] You can enter all sorts of stuff applipable to your garden that you like.</p> <p>More Stuff</p>");
+  $("#chronOldest").append(
+    "Normally what you would see here is a log of all the crops arranged by log date");
+  $("#chronNewest").append("");
+}
 
 function printFieldNotesToScreen(data) {
   //Logic for displaying to Crop View
@@ -224,7 +274,7 @@ function printFieldNotesToScreen(data) {
 function printCropToScreen(data) {
 
   // Display Required Information
-  $('<div class="cropContainer" id="' + data.id + '">' + 
+  $('<div class="cropContainer" id="' + data.id + '" class="' + data.id + '">' + 
     '<h2><em>' + data.kind + '</em> :: ' + data.title + '</h2>' + 
 
       '<ul id="UL_' + data.id + '">' +
@@ -236,7 +286,7 @@ function printCropToScreen(data) {
       data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
     '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + 
       data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
-    '<a class="red manage" onclick="deleteRecord(\'' + 
+    '<a class="red hideShow" onclick="deleteRecord(\'' + 
       data.id + '\')">[Remove]</a>' +
 
     '</div>').appendTo('#'+data.parentId);
@@ -255,7 +305,7 @@ function printCropToScreen(data) {
 function printActionToScreen(data) {
 
   // Display Required Information
-  $('<div class="actionContainer" id="' + data.id + '">' + 
+  $('<div class="actionContainer" id="' + data.id + '" class="' + data.id + '">' + 
     '<h4><em>' + data.kind + '</em> :: ' + data.title + '</h4>' + 
 
       '<span id="SP_' + data.id + '"></span>' +
@@ -265,7 +315,7 @@ function printActionToScreen(data) {
       data.id + '\', \'' + data.title + '\' )">[Log Action]</a>' +
     '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + 
       data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
-    '<a class="red manage" onclick="deleteRecord(\'' + 
+    '<a class="red hideShow" onclick="deleteRecord(\'' + 
       data.id + '\')">[Remove]</a>' +
 
     '</div>').appendTo('#'+data.parentId);
@@ -280,7 +330,7 @@ function printActionToScreen(data) {
   }
 
   if (data.weather !== undefined) {
-    $('#SP_' + data.id).append('<p>Weather: ' + data.weather + '</p>');
+    $('#SP_' + data.id).append('<p><i class="icon-asterisk"></i> ' + data.weather + '</p>');
   }
 
 }
@@ -288,26 +338,26 @@ function printActionToScreen(data) {
 function printQuickToScreen(data) {
 
   // Display Required Information
-  $('<div class="quickContainer" id="' + data.id + '">' + 
+  $('<div class="quickContainer" id="' + data.id + '" class="' + data.id + '">' + 
 
       '<span id="SP_' + data.id + '"></span>' +
       '<p>' + data.longText + '</p>' +
     
-    '<a class="red manage" onclick="deleteRecord(\'' + 
+    '<a class="red hideShow" onclick="deleteRecord(\'' + 
       data.id + '\')">[Remove]</a>' +
     
     '</div>').appendTo('#'+data.parentId);
 
   // Display Non-Required Information
   if (data.weather !== undefined) {
-    $('#SP_' + data.id).append('<p>Weather: ' + data.weather + '</p>');
+    $('#SP_' + data.id).append('<p><i class="icon-asterisk"></i> ' + data.weather + '</p>');
   }
 
 }
 
 function printChronOldest(data) {
   $(
-    '<div class="logByDate">' +
+    '<div class="logByDate ' + data.id + '">' +
       '<h5><a href="#' + data.id + '" onclick="toggleCropView()">' +
         '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
       '</a></h5>' +
@@ -318,7 +368,7 @@ function printChronOldest(data) {
 
 function printChronNewest(data) {
   $(
-    '<div class="logByDate">' +
+    '<div class="logByDate ' + data.id + '">' +
       '<h5><a href="#' + data.id + '" onclick="toggleCropView()">' +
         '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
       '</a></h5>' +
@@ -446,23 +496,3 @@ function resetAllForms() {
 function initPopovers() {
   $(".formQ").popover();
 }
-
-//Get current weather
-/////////////////////
-
-function getWeather() {
-
-  // http://api.openweathermap.org
-  var baseUrl   = "http://api.openweathermap.org/data/2.1";
-  var station   = "/weather/city/4644585";
-  var units     = "?units=imperial"; //imperial or metric
-  var mode      = "&mode=daily_compact"; // snapshot not forecast 
-  var type      = "&type=json"; // json or html
-  var url       = baseUrl + station + units + mode + type;
-
-  //http://api.openweathermap.org/data/2.1/weather/city/4644585?units=imperial&mode=daily_compact&type=json
- 
-}
-
-
-

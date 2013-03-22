@@ -29,7 +29,7 @@
       <!-- Head -->
       <div class="row">
         <div id="header" class="span12">
-          <h1><em>The </em>Field Notes App <em>on</em> Backlift.com</h1>
+          <h1><em>The </em>Field Notes App</h1>
           <p>Log it here, so you can track it year after year</a></p>
 
           <p>
@@ -43,9 +43,7 @@
       
       <div class="row"> <!--content and forms-->
 
-
-
-        <div class="span5 pull-right">
+        <div class="span4 pull-right">
 
           <form id="cropLogForm" class="form">
             <h2>Crop Log</h2>
@@ -63,15 +61,15 @@
             </b></p>
 
             Title: (Common Plant Name)<br>
-            <input type="text" id="imputLogTitle"><br>
+            <input type="text" id="imputLogTitle" class="input-block-level"><br>
             Strain: (Specific Plant Type)<br>
-            <input type="text" id="imputLogStrain"><br>
+            <input type="text" id="imputLogStrain" class="input-block-level"><br>
             Harvest Notes: <br>
-            <input type="text" id="imputLogHarvestNotes"><br>
+            <input type="text" id="imputLogHarvestNotes" class="input-block-level"><br>
             Flags: (Important Things)<br>
-            <input type="text" id="imputLogFlags"><br>
+            <input type="text" id="imputLogFlags" class="input-block-level"><br>
             Notes: <br>
-            <textarea id="imputLogLongText" rows="4"></textarea><br> 
+            <textarea id="imputLogLongText" rows="4" class="input-block-level"></textarea><br> 
 
             <button type="button" class="btn cancelForm">Cancel</button>
             <button type="button" class="btn clearForm">Reset</button>           
@@ -99,15 +97,20 @@
             <input id="imputActionParentTitle" type="hidden" value="Garden Log">
             
             Title: (Action)<br>
-            <input type="text" id="imputActionTitle"><br>
+            <input type="text" id="imputActionTitle" class="input-block-level"><br>
             Items:<br>
-            <input type="text" id="imputActionItems"><br>
+            <input type="text" id="imputActionItems" class="input-block-level"><br>
             Workers: <br>
-            <input type="text" id="imputActionWorkers"><br>
-            Atmospheric Condtions: <br>
-            <input type="text" id="imputActionWeather"><br>
+            <input type="text" id="imputActionWorkers" class="input-block-level"><br>
+            Meteorogical Observations: <br>
+            <input type="text" id="imputActionWeather"class="input-block-level"><br>
+            <!-- Weather Checkbox -->
+            <label class="checkbox">
+              <input type="checkbox" id="checkActionWeather"> Use data from<a href="http://www.wunderground.com/?apiref=4903112f31fcb16b"> wnderground.com</a><br><br>
+            </label>
+
             Notes: <br>
-            <textarea id="imputActionLongText" rows="4"></textarea><br> 
+            <textarea id="imputActionLongText" rows="4" class="input-block-level"></textarea><br> 
             
             <button type="button" class="btn cancelForm">Cancel</button>
             <button type="button" class="btn clearForm">Reset</button>      
@@ -140,7 +143,13 @@
               <!--Dropdown Populated by function populateQuickDropdown() -->
             </select> <br>
 
-            <textarea id="imputQuickLongText" rows="4"></textarea><br>
+            <!-- Weather Checkbox -->
+            <label class="checkbox">
+              <input type="checkbox" id="checkQuickWeather"> Include Weather from<a href="http://www.wunderground.com/?apiref=4903112f31fcb16b"> wnderground.com</a><br>
+            </label>
+
+            <!-- Notes -->
+            <textarea id="imputQuickLongText" rows="4" class="input-block-level"></textarea><br>
 
             <button type="button" class="btn cancelForm">Cancel</button>
             <button type="button" class="btn clearForm">Reset</button>      
@@ -168,26 +177,23 @@
               </ul>
             <h3>To Do</h3>
               <ul>
-                <li>Add welcome message for naked database</li>
-                <li>Integrate with weather API</li>
+                <li>Validate Required forms</li>
               </ul>
           </div>
 
         </div>
-
-        <!-- &nbsp; -->
                   
-        <div id="gardenLog" class="span7"></div>
+        <div id="gardenLog" class="span8"></div>
 
-        <div id="chronOldest" class="span7"></div>
+        <div id="chronOldest" class="span8"></div>
 
-        <div id="chronNewest" class="span7"></div>
+        <div id="chronNewest" class="span8"></div>
 
 
-        <div id="footer" class="span7">
+        <div id="footer" class="span8">
           <hr>
-          <p>Code by Christopher Fryman NSS2013 :: <a id="manage">[Secure Login]</a>
-            <a class="red manage" onclick="purgeDatabase()">[purge Database]</a>
+          <p>Code by Christopher Fryman NSS2013 :: <a id="hideShow_Show">[Delete Items]</a>
+            <a class="red hideShow" id="hideShow_Hide">[Finished Deleting Items]</a>
         </div>
 
 
