@@ -37,19 +37,19 @@ $(document).ready(function () {
 
   // FORM TRIGGERS NAV UNDER PAGE TITLE
 
-  $("#cropLogTrigger").click(function () {
+  $(".cropLogTrigger").click(function () {
     //clear first then show
     resetAllForms();
     toggleCropForm();
   });
 
-  $("#actionLogTrigger").click(function () {
+  $(".actionLogTrigger").click(function () {
     //clear first then show
     resetAllForms();
     toggleActionForm();
   });
 
-  $("#quickNoteTrigger").click(function () {
+  $(".quickNoteTrigger").click(function () {
     //clear first then show
     resetAllForms();
     toggleQuickNoteForm();
@@ -197,12 +197,16 @@ function postNewFieldNote(imputData) {
     dataType: "json",
     data: imputData,
     success: function (data) {
-      printFieldNotesToScreen(data);
-      populateQuickDropdown(data);
-      populateCropLinks(data);
-      resetAllForms();
-      hideAllFormsSlow();
-
+      // Print log on screen
+        printFieldNotesToScreen(data);
+        populateQuickDropdown(data);
+        populateCropLinks(data);
+      // clear forms
+        resetAllForms();
+        hideAllFormsSlow();
+      //change view and go to new post
+        toggleCropView();
+        window.location.assign("#" + data.id);
     } // end sucess
   }); // end ajax post call
 }
@@ -218,42 +222,42 @@ function deleteRecord(id) {
       $('#' + id).hide();
       $('.' + id).hide();
       console.log('deleted: ' + id);
-      deleteChildrenOf(id);
+      // deleteChildrenOf(id);
     } // end sucess
   }); // end ajax
 } // end function
 
-function deleteChildrenOf(id) {
-  $.ajax({ 
-    url: "backliftapp/fieldNotesData", 
-    type: "GET", 
-    success: function (data) {
-      // check each for parent match
-      for (var i = 0; i < data.length; i++) {
-        // if match is found
-        if (data[i].parentId === id) {
-          deleteRecord(data[i].id)
-        } // end if
-      } // end for
-    } // end success
-  }); // end ajax
-} // end function
+// function deleteChildrenOf(id) {
+//   $.ajax({ 
+//     url: "backliftapp/fieldNotesData", 
+//     type: "GET", 
+//     success: function (data) {
+//       // check each for parent match
+//       for (var i = 0; i < data.length; i++) {
+//         // if match is found
+//         if (data[i].parentId === id) {
+//           deleteRecord(data[i].id)
+//         } // end if
+//       } // end for
+//     } // end success
+//   }); // end ajax
+// } // end function
 
-function purgeDatabase() {
-  var conf = confirm("Are you sure you want to clear all the garden data");
-  if (conf == true) {
-    $.ajax({
-      url: "backliftapp/fieldNotesData",
-      type: "GET",
-      success: function (data) {
-        // clear each one by one
-        for (i = 0; i < data.length; i++) {
-          deleteRecord(data[i].id);
-        } // end for
-      } // end sucess
-    }); // end ajax get call
-  } // end if 
-} // end ajax
+// function purgeDatabase() {
+//   var conf = confirm("Are you sure you want to clear all the garden data");
+//   if (conf == true) {
+//     $.ajax({
+//       url: "backliftapp/fieldNotesData",
+//       type: "GET",
+//       success: function (data) {
+//         // clear each one by one
+//         for (i = 0; i < data.length; i++) {
+//           deleteRecord(data[i].id);
+//         } // end for
+//       } // end sucess
+//     }); // end ajax get call
+//   } // end if 
+// } // end ajax
 
 //Display The data on site
 //////////////////////////
@@ -305,11 +309,9 @@ function printCropToScreen(data) {
   if (data.harvestNotes !== undefined) {
     $('#UL_' + data.id).append('<li>Harvest Notes: ' + data.harvestNotes + '</li>');
   }
-
   if (data.flags !== undefined) {
     $('#UL_' + data.id).append('<li>Remember!: ' + data.flags + '</li>');
   }
-
 }
 
 function printActionToScreen(data) {
@@ -334,15 +336,12 @@ function printActionToScreen(data) {
   if (data.items !== undefined) {
     $('#SP_' + data.id).append('<p>Items: ' + data.items + '</p>');
   }
-
   if (data.workers !== undefined) {
     $('#SP_' + data.id).append('<p>Workers: ' + data.workers + '</p>');
   }
-
   if (data.weather !== undefined) {
     $('#SP_' + data.id).append('<p><i class="icon-asterisk"></i> ' + data.weather + '</p>');
   }
-
 }
 
 function printQuickToScreen(data) {
@@ -362,7 +361,6 @@ function printQuickToScreen(data) {
   if (data.weather !== undefined) {
     $('#SP_' + data.id).append('<p><i class="icon-asterisk"></i> ' + data.weather + '</p>');
   }
-
 }
 
 function printChronOldest(data) {
@@ -372,6 +370,7 @@ function printChronOldest(data) {
         '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
       '</a></h5>' +
       '<p>' + data.longText + '</p>' + 
+      '<a class="red hideShow" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
     '</div>'
   ).appendTo('#chronOldest');
 }
@@ -382,13 +381,14 @@ function printChronNewest(data) {
       '<h5><a href="#' + data.id + '" onclick="toggleCropView()">' +
         '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
       '</a></h5>' +
-      '<p>' + data.longText + '</p>' + 
+      '<p>' + data.longText + '</p>' +
+      '<a class="red hideShow" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' + 
     '</div>'
   ).prependTo('#chronNewest');
 }
 
 // Populate crop info - navagation and selection
-//////////////////////////////////////////////
+////////////////////////////////////////////////
 
 function populateQuickDropdown(data) {
   if (data.kind === "Crop") {
