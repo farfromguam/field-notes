@@ -41,7 +41,7 @@ This project arose out of a need to remember what worked historically in our gar
 
 I now have a *client*, She helps run this community garden near my house. Through conversations with her we disussed features of this web app and I was given a [rough scope of work](https://docs.google.com/file/d/1vTGu3K1QMnXq8YzdX1__k7Kvh58bQM7_Ju_w-GencE5vAnCfGidMc5Ca6Zkr/edit?usp=sharing).
 
-The current State
+The Current State
 -----------------
 
 I have the ability to post Three different kinds of logs  
