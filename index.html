@@ -29,40 +29,47 @@
   <body>
     <div class="container">
 
-      <!-- Head -->
-      <div class="row">
+      <div class="row"> <!-- HEAD ROW -->
 
         <!-- Header for regular View -->
         <div id="header" class="header span12 hidden-phone">
           <h1><em>The </em>Field Notes App</h1>
-          <p>Log it here, so you can track it year after year</a></p>
+          <p class="tagline">Log it here, so you can track it year after year</p>
           <p>
             <a class="cropLogTrigger" href="#">[New Crop Log]</a> 
             <a class="actionLogTrigger" href="#">[New Action Log]</a> 
-            <a class="quickNoteTrigger" href="#">[Quick Note]</a>
+            <a class="quickNoteTrigger" href="#">[New Quick Note]</a>
+            <a class="Q" 
+              rel="popover"
+              data-trigger="hover"
+              data-placement="bottom" 
+              data-content='These are the main logging buttons. Click on one and the form to add data will appear.'
+              >[?]</a>
           </p>
         </div>
 
         <!-- header for phone view -->
         <div id="phoneHeader" class="header hidden-desktop hidden-tablet">
           <h1>Field Notes</h1>   
-              <button class="cropLogTrigger btn btn-mini btn-success" href="#cropLogForm">+ Crop Log</button> 
-              <button class="actionLogTrigger btn btn-mini btn-success" href="#actionLogForm">+ Action Log</button>
-              <button class="quickNoteTrigger btn btn-mini btn-success" href="#quickNoteForm">+ Quick Note</button>
+            <a class="cropLogTrigger" href="#cropLogForm">[+Crop Log]</a> 
+            <a class="actionLogTrigger" href="#actionLogForm">[+Action Log]</a> 
+            <a class="quickNoteTrigger" href="#quickNoteForm">[+Quick Note]</a>
           <hr>
         </div>
 
-      </div> <!-- END ROW -->
+      </div> <!-- END HEAD ROW -->
       
-      <div class="row"> <!--content and forms-->
+      <div class="row"> <!-- BODY ROW -->
 
+        <!-- SIDE -->
         <div class="span4 pull-right">
 
+          <!-- CROP LOG FORM -->
           <form id="cropLogForm" class="form">
             <h2>Crop Log</h2>
 
             <p>
-              <a class="formQ" 
+              <a class="Q" 
               rel="popover"
               data-trigger="hover"
               data-placement="left" 
@@ -89,12 +96,12 @@
             <button type="button" class="btn btn btn-success" id="submitCropLog">Log It</button>
           </form>
 
-
+          <!-- ACTION LOG FORM -->
           <form id="actionLogForm" class="form">
             <h2>Action Log</h2>
             
             <p>
-              <a class="formQ" 
+              <a class="Q" 
               rel="popover"
               data-trigger="hover"
               data-placement="left" 
@@ -130,16 +137,16 @@
             <button type="button" class="btn btn btn-success" id="submitActionLog">Post It</button>
           </form>
 
-
+          <!-- QUICK NOTE FORM -->
           <form id="quickNoteForm" name="quickNoteForm" class="form">
             <h2>Quick Note</h2>
 
             <p>
-              <a class="formQ" 
+              <a class="Q" 
               rel="popover"
               data-trigger="hover"
               data-placement="left" 
-              data-content='To post a Quick Note you must either choose a location from the dropdown menu or select "Quick Note" under the desired post and the location will update.'
+              data-content='To post a Quick Note you must either choose a location from the dropdown menu or select "Quick Note" under the desired post and the target location will update.'
               >[?]</a>
 
             <b><!-- default posting location is empty -->
@@ -168,7 +175,8 @@
             <button type="button" class="btn clearForm">Reset</button>      
             <button type="button" class="btn btn btn-success" id="submitQuickNote">Note It</button>
           </form>
-
+        
+          <!-- SIDEBAR -->
           <div id="Links" class="sidebar">
             <h3>Find</h3>
 
@@ -191,23 +199,28 @@
               &nbsp;
           </div>
 
-        </div>
-                  
-        <div id="gardenLog" class="span8"></div>
+        </div> <!-- END SIDE -->
+           
+        <div class="span8"> <!-- MAIN -->      
+          <div id="gardenLog"></div>
+          <div id="chronOldest"></div>
+          <div id="chronNewest"></div>
 
-        <div id="chronOldest" class="span8"></div>
+          <div id="footer">
+            <hr>
+            <p>Code by Christopher Fryman NSS2013 <a id="hideShow_Show" class="hidden-phone">[Show Delete Buttons]</a>
+              <a class="red hideShow" id="hideShow_Hide">[Hide Delete Buttons]</a> <a class="Q" 
+              rel="popover"
+              data-trigger="hover"
+              data-placement="top" 
+              data-content='If you wish to delete a log entry, you can use this button to show all the red delete buttons. The log entry will be deleted immedeatly and cannot be retrieved. Use this carefully! When you are finished click on the [Hide Delete Buttons] button to ... hide the delete buttons.'
+              >[?]</a></p>
+          </div>
 
-        <div id="chronNewest" class="span8"></div>
+        </div> <!-- END MAIN -->
 
+      </div> <!-- END BODY ROW -->
 
-        <div id="footer" class="span8">
-          <hr>
-          <p>Code by Christopher Fryman NSS2013 <a id="hideShow_Show" class="hidden-phone">[Delete Items]</a>
-            <a class="red hideShow" id="hideShow_Hide">[Finished Deleting Items]</a>
-        </div>
-
-
-      </div> <!--End content and forms-->
-    </div> <!--end container-->
+    </div> <!--container-->
   </body>
 </html>
