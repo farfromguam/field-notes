@@ -169,8 +169,8 @@ $(document).ready(function () {
 
 }); // end document.ready
 
-//AJAX GET POST
-///////////////
+//AJAX GET POST DELETE
+//////////////////////
 
 function getAllFieldNotes() {
   $.ajax({
@@ -179,6 +179,7 @@ function getAllFieldNotes() {
     success: function (data) {
       if (data.length === 0) {
         printEmptyMessage();
+        initPopovers();
       } else {
         for (var i = 0; i < data.length; i++) {
           printFieldNotesToScreen(data[i]);
@@ -211,9 +212,6 @@ function postNewFieldNote(imputData) {
   }); // end ajax post call
 }
 
-// Delete Functions
-///////////////////
-
 function deleteRecord(id) {
   $.ajax({
     url: "backliftapp/fieldNotesData/" + id,
@@ -222,26 +220,9 @@ function deleteRecord(id) {
       $('#' + id).hide();
       $('.' + id).hide();
       console.log('deleted: ' + id);
-      // deleteChildrenOf(id);
     } // end sucess
   }); // end ajax
 } // end function
-
-// function deleteChildrenOf(id) {
-//   $.ajax({ 
-//     url: "backliftapp/fieldNotesData", 
-//     type: "GET", 
-//     success: function (data) {
-//       // check each for parent match
-//       for (var i = 0; i < data.length; i++) {
-//         // if match is found
-//         if (data[i].parentId === id) {
-//           deleteRecord(data[i].id)
-//         } // end if
-//       } // end for
-//     } // end success
-//   }); // end ajax
-// } // end function
 
 // function purgeDatabase() {
 //   var conf = confirm("Are you sure you want to clear all the garden data");
@@ -264,10 +245,12 @@ function deleteRecord(id) {
 
 function printEmptyMessage() {
   $("#gardenLog").append(
-    "<h3>Welcome,</h3><p>It appears that it is your first time here (or you hideShowd to break something.) Either way welcome. Have a look around and get comfortable. Your main navagatio and log entry is handled by the links above they look like this: [words in a box] You can enter all sorts of stuff applipable to your garden that you like.</p> <p>More Stuff</p>");
+    '<h3>Welcome</h3> <p>At this time there is nothing to look at. You can fix this by adding to your garden log via the links above. Log entry as well as most actions is handled by links with [brackets] around them. You can enter all sorts of stuff applipable to your garden via these links. If you get stuck look for a <a class="Q" rel="popover" data-trigger="hover" data-placement="bottom" data-content="You will find all sorts of helpful tips in these little [?] boxes">[?]</a> and hover over it they could help you figure some things out.</p> <h3>Navagation</h3> <p>On the right is the main navagation. You can use this to zip all around the page via page views and crop links.</p> <h3>Well what now?</h3><p>You could go willy nilly typing and posting all of the things, but its best to know what type of data each form expects from you and what its used for.</p> <h4><em>Crop Log</em></h4> <p>The crop log is used for the inital plant entry. To post a entry you need to have the Title, The specific plant type, and something in the note field. Optonal is fields for harvest notes and flags. This is a good place to put little notes to remind you of the fact that okra is poisonous, or that you need to harvest a tomato after it is red.</p><h4><em>Action Log</em></h4><p>This is used to track actions and events related to your garden. It requires only a title and your notes to post. Optionally you can add the current weather, or note anything out of the ordinary (like a monsoon). There are also fields for tracking the tools or additives used, like tobasco and vodka for getting rid of bugs. The workers field is optional for tracking participation in a community garden.</p><h4><em>Quick Post</em></h4><p>The last and final type is a quick note log for easy and fast entry. This is where you will note from most often, as most are short and specific to a paticular plant. It can hold any sort of data, and can be nested under any crop or action. You could note the sucess of your tobasco and vodka treatment. or make note that the beets you chose were a bitter, and bad choice.</p>'); 
   $("#chronOldest").append(
-    "Normally what you would see here is a log of all the crops arranged by log date");
-  $("#chronNewest").append("");
+    "<h3>Chronological View</h3> <p>Normally what you would see here is a log of all the crops arranged by date (oldest first of course). Once you start adding to your crop log this will be filled automatically</p> <p>The great thing that this offers is a psudo-internetual blog type view of your data. You can scroll through it like you would with any of the internets."); 
+  $("#chronNewest").append(
+    "<h3>Chronological View</h3> <p>Normally what you would see here is a log of all the crops arranged by date (newest first of course). Once you start adding to your crop log this will be filled automatically</p> <p>Whats nice about this view is that if you know about when you posted something It can help you find it by utilizing assoicitave memory synapsas in your brain.</p>"); 
+  $('<li>Your Future Crops</li>').appendTo('#ulCropLinks');
 }
 
 function printFieldNotesToScreen(data) {
@@ -301,7 +284,7 @@ function printCropToScreen(data) {
     '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + 
       data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
     '<a class="red hideShow" onclick="deleteRecord(\'' + 
-      data.id + '\')">[Remove]</a>' +
+      data.id + '\')">[Delete]</a>' +
 
     '</div>').appendTo('#'+data.parentId);
 
@@ -328,7 +311,7 @@ function printActionToScreen(data) {
     '<a href="#quickNoteForm" onclick="setQuickNoteParent(\'' + 
       data.id + '\', \'' + data.title + '\' )">[Quick Note]</a>' +
     '<a class="red hideShow" onclick="deleteRecord(\'' + 
-      data.id + '\')">[Remove]</a>' +
+      data.id + '\')">[Delete]</a>' +
 
     '</div>').appendTo('#'+data.parentId);
 
@@ -353,7 +336,7 @@ function printQuickToScreen(data) {
       '<p>' + data.longText + '</p>' +
     
     '<a class="red hideShow" onclick="deleteRecord(\'' + 
-      data.id + '\')">[Remove]</a>' +
+      data.id + '\')">[Delete]</a>' +
     
     '</div>').appendTo('#'+data.parentId);
 
@@ -370,7 +353,7 @@ function printChronOldest(data) {
         '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
       '</a></h5>' +
       '<p>' + data.longText + '</p>' + 
-      '<a class="red hideShow" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' +
+      '<a class="red hideShow" onclick="deleteRecord(\'' + data.id + '\')">[Delete]</a>' +
     '</div>'
   ).appendTo('#chronOldest');
 }
@@ -382,7 +365,7 @@ function printChronNewest(data) {
         '<em>' + data.date + '</em> :: ' + data.kind + ' post :: <em>' + data.parentTitle + '</em> :: ' + data.title + ' ::' +
       '</a></h5>' +
       '<p>' + data.longText + '</p>' +
-      '<a class="red hideShow" onclick="deleteRecord(\'' + data.id + '\')">[Remove]</a>' + 
+      '<a class="red hideShow" onclick="deleteRecord(\'' + data.id + '\')">[Delete]</a>' + 
     '</div>'
   ).prependTo('#chronNewest');
 }
@@ -504,6 +487,5 @@ function resetQuickNoteParent() {
 /////////
 
 function initPopovers() {
-  $(".formQ").popover();
+  $(".Q").popover();
 }
-
