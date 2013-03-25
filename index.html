@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
 
+    <!-- iPhone Scale -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- RELOADER -->
     <script src='/js/backlift-reloader.js'></script>
 
@@ -28,18 +31,28 @@
 
       <!-- Head -->
       <div class="row">
-        <div id="header" class="span12">
+
+        <!-- Header for regular View -->
+        <div id="header" class="header span12 hidden-phone">
           <h1><em>The </em>Field Notes App</h1>
           <p>Log it here, so you can track it year after year</a></p>
-
           <p>
-            <a id="cropLogTrigger">[New Crop Log]</a> 
-            <a id="actionLogTrigger">[New Action Log]</a> 
-            <a id="quickNoteTrigger">[Quick Note]</a>
+            <a class="cropLogTrigger" href="#">[New Crop Log]</a> 
+            <a class="actionLogTrigger" href="#">[New Action Log]</a> 
+            <a class="quickNoteTrigger" href="#">[Quick Note]</a>
           </p>
-
         </div>
-      </div>
+
+        <!-- header for phone view -->
+        <div id="phoneHeader" class="header hidden-desktop hidden-tablet">
+          <h1>Field Notes</h1>   
+              <button class="cropLogTrigger btn btn-mini btn-success" href="#cropLogForm">+ Crop Log</button> 
+              <button class="actionLogTrigger btn btn-mini btn-success" href="#actionLogForm">+ Action Log</button>
+              <button class="quickNoteTrigger btn btn-mini btn-success" href="#quickNoteForm">+ Quick Note</button>
+          <hr>
+        </div>
+
+      </div> <!-- END ROW -->
       
       <div class="row"> <!--content and forms-->
 
@@ -168,13 +181,14 @@
             
             <h3>Page Views</h3>
               <ul>
-                <li><a id="cropView">By Crop</a></li>
-                <li><a id="cronNewestView">Newset First</a></li>
-                <li><a id="cronOldestView">Oldest First</a></li>
+                <li><a id="cropView" href="#gardenLog">By Crop</a></li>
+                <li><a id="cronNewestView" href="#chronNewest">Newset First</a></li>
+                <li><a id="cronOldestView" href="#chronOldest">Oldest First</a></li>
               </ul>
             <h3>Crop Links</h3>
               <ul id="ulCropLinks">
               </ul>
+              &nbsp;
           </div>
 
         </div>
@@ -188,7 +202,7 @@
 
         <div id="footer" class="span8">
           <hr>
-          <p>Code by Christopher Fryman NSS2013 :: <a id="hideShow_Show">[Delete Items]</a>
+          <p>Code by Christopher Fryman NSS2013 <a id="hideShow_Show" class="hidden-phone">[Delete Items]</a>
             <a class="red hideShow" id="hideShow_Hide">[Finished Deleting Items]</a>
         </div>
 
