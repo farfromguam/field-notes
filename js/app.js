@@ -38,32 +38,31 @@ $(document).ready(function () {
   // FORM TRIGGERS NAV UNDER PAGE TITLE
 
   $(".cropLogTrigger").click(function () {
-    //clear first then show
-    resetAllForms();
+    clearAllInputs();
     toggleCropForm();
   });
 
   $(".actionLogTrigger").click(function () {
-    //clear first then show
-    resetAllForms();
-    toggleActionForm();
-  });
+    clearAllInputs();
+    // set parent to default also toggles view
+    setActionLogParent("gardenLog", "Garden Log"); 
+ });
 
   $(".quickNoteTrigger").click(function () {
-    //clear first then show
-    resetAllForms();
+    clearAllInputs();
     toggleQuickNoteForm();
+    setQuickNoteParentNull();
   }); 
 
   // FORM CLEAR AND CANCEL
 
   $(".cancelForm").click(function() {
+    clearAllInputs();
     hideAllFormsSlow();
-    resetAllForms();
   });
 
   $(".clearForm").click(function () {
-    resetAllForms();
+    clearAllInputs();
   });
 
   // CROP LOG SUBMIT ACTION
@@ -179,7 +178,6 @@ function getAllFieldNotes() {
     success: function (data) {
       if (data.length === 0) {
         printEmptyMessage();
-        initPopovers();
       } else {
         for (var i = 0; i < data.length; i++) {
           printFieldNotesToScreen(data[i]);
@@ -187,6 +185,7 @@ function getAllFieldNotes() {
           populateCropLinks(data[i]);
         } // end loop
       }  // end else
+      initPopovers();
     }   // end sucess
   });  // end ajax get call
 }
@@ -203,7 +202,7 @@ function postNewFieldNote(imputData) {
         populateQuickDropdown(data);
         populateCropLinks(data);
       // clear forms
-        resetAllForms();
+        clearAllInputs();
         hideAllFormsSlow();
       //change view and go to new post
         toggleCropView();
@@ -262,7 +261,6 @@ function printFieldNotesToScreen(data) {
   } else if (data.kind === "Quick") {
     printQuickToScreen(data);
   } 
-
   // Chron Views
   printChronOldest(data);
   printChronNewest(data);
@@ -434,16 +432,13 @@ function hideAllFormsSlow() {
     $("#quickNoteForm").hide(500);
 }
 
-function resetAllForms() {
+function clearAllInputs() {
   // clear Imputs
   $(':input')
     .not(':button, :submit, :reset, :hidden')
     .val('')
     .removeAttr('checked')
     .removeAttr('selected');
-
-  resetQuickNoteParent();
-  resetActionLogParent();
 }
 
 // Parent set and reset functions
@@ -456,6 +451,7 @@ function setActionLogParent(parentId, parentTitle) {
   $("#imputActionParentTitle").val(parentTitle);
   // tell user what the target is
   $("#actionLogParent").html("Posting To: " + parentTitle)
+  //Show Form
   toggleActionForm();
 }
 
@@ -468,16 +464,12 @@ function setQuickNoteParent(parentId, parentTitle) {
   $("#imputQuickParentTitle").val(parentTitle);
   // tell user what the target is
   $("#quickNoteParent").html("Posting To: " + parentTitle);
+  //Show Form
   toggleQuickNoteForm();
 }
 
-function resetActionLogParent() {
-  $("#imputActionParent").val("gardenLog");
-  $("#actionLogParent").html("Posting To: gardenLog")
-}
-
-function resetQuickNoteParent() {
-  //set all to default
+function setQuickNoteParentNull() {
+  //set all to Null
   $("#imputQuickDropdown").show();
   $("#imputQuickParentId").val("");
   $("#quickNoteParent").html("No location targeted")
