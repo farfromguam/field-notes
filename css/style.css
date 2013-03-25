@@ -19,7 +19,6 @@
     color: red;
 }
 
-
 .cropContainer {
     padding: 10px 20px 20px 20px;
     margin: 20px 0px 25px 0px;
@@ -77,12 +76,16 @@ a {
     margin-bottom: 30px;
 }
 
-#header h1 {
+#phoneHeader {
+    margin-top: 25px;
+}
+
+.header h1 {
     text-transform: lowercase;
     font-size: 3.8em;
 }
 
-#header p {
+.header p {
     margin: 0px;
     padding: 0px;
     text-transform: uppercase;
@@ -90,7 +93,7 @@ a {
     color: #3B3B3B;
 }
 
-#header p a {
+.header p a {
     color: #3B3B3B;
 }
 
