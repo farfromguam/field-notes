@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js'></script>
+
+    <style>
+      body {
+          font-size:80%;
+          margin: 0 30 0 30;
+      }
+
+      .crop {
+          padding:  0 15  0 15;
+          margin:  20  0 20  0;
+          border: 1px dashed black;
+            -webkit-border-top-right-radius: 60px;
+            -webkit-border-bottom-left-radius: 20px;
+            -moz-border-radius-topright: 60px;
+            -moz-border-radius-bottomleft: 20px;
+            border-top-right-radius: 60px;
+            border-bottom-left-radius: 20px;
+      }
+
+      .quick,
+      .action {
+          padding-left: 15px;
+          border-left: 1px dashed black;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="gardenLog">
+        <h1>Print Report for Your Garden // <span id="currentDate">*Current Date*</span></h1>
+        <h2><em>The</em> Field Notes App</h2> 
+
+    </div>
+
+  </body>
+
+    <script>
+      $(document).ready(function () {
+
+        $.ajax({
+          url: "backliftapp/fieldNotesData",
+          type: "GET",
+          success: function (data) {
+            if (data.length === 0) {
+              $("#gardenLog").append("Sorry, I have no data to display.");
+            } else {
+              for (var i = 0; i < data.length; i++) {
+                printFieldNotesToScreen(data[i]);
+              } // end loop
+            }  // end else
+          }   // end sucess
+        });  // end ajax get call
+          
+        $('#currentDate').html(new Date().toString('MMM d, yyyy'));
+
+        function printFieldNotesToScreen(data) {
+
+          // Display Required Information
+          $('<div id="' + data.id + '" class="logEntry ' + data.kind + '">' + 
+            '<h2><em>' + data.kind + '</em> :: ' + data.title + ' // ' + data.date + '</h2>' + 
+             
+              '<ul id="UL_' + data.id + '"></ul>' +
+             
+              '<p>'+ data.longText + '</p>' +
+            '</div>').appendTo('#'+data.parentId);
+
+          // Display Non-Required Information
+          if (data.strain !== undefined) {
+            $('#UL_' + data.id).append('<li>Plant Strain: ' + data.strain + '</li>');
+          }
+          if (data.harvestNotes !== undefined) {
+            $('#UL_' + data.id).append('<li>Harvest Notes: ' + data.harvestNotes + '</li>');
+          }
+          if (data.flags !== undefined) {
+            $('#UL_' + data.id).append('<li>Remember: ' + data.flags + '</li>');
+          }
+          if (data.items !== undefined) {
+            $('#UL_' + data.id).append('<li>Items: ' + data.items + '</li>');
+          }
+          if (data.workers !== undefined) {
+            $('#UL_' + data.id).append('<li>Workers: ' + data.workers + '</li>');
+          }
+          if (data.weather !== undefined) {
+            $('#UL_' + data.id).append('<li>Weather: ' + data.weather + '</li>');
+          }
+        
+        } // end function
+
+      }); // end document ready
+    </script>
+
+</html>
