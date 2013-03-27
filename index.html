@@ -41,7 +41,7 @@
             <a class="quickNoteTrigger" href="#">[New Quick Note]</a>
             <a class="Q" 
               rel="popover"
-              data-trigger="hover"
+              data-trigger="click"
               data-placement="bottom" 
               data-content='These are the main logging buttons. Click on one and the form to add data will appear.'
               >[?]</a>
@@ -69,16 +69,16 @@
             <h2>Crop Log</h2>
 
             <p>
-              <a class="Q" 
-              rel="popover"
-              data-trigger="hover"
-              data-placement="left" 
-              data-content="This will post to the gardenLog by default. The location cannot be changed."
-              >[?]</a>
-            
               <b><!--default posting location will cannot be changed ATT-->
-              <span class="toLocation">Posting To: gardenLog</span><br>
-            </b></p>
+                <span class="toLocation">Posting To: gardenLog</span>&nbsp;
+              </b>
+              <a class="Q" 
+                rel="popover"
+                data-trigger="click"
+                data-placement="bottom" 
+                data-content="This will post to the gardenLog by default. This location cannot be changed."
+                >[?]</a>
+            </p>
 
             Title: (Common Plant Name)<br>
             <input type="text" id="imputLogTitle" class="input-block-level" placeholder="*Required"><br>
@@ -101,16 +101,16 @@
             <h2>Action Log</h2>
             
             <p>
+              <b><!-- default posting location will change if it is triggerd by function logAnAction() -->
+                <span class="toLocation" id="actionLogParent">Posting To: gardenLog</span>&nbsp;
+              </b>
               <a class="Q" 
-              rel="popover"
-              data-trigger="hover"
-              data-placement="left" 
-              data-content='By default all actions will post to gardenLog, If you wish to nest an action select "Log Action" under the desired post and the location will update.'
-              >[?]</a>
-
-            <b><!-- default posting location will change if it is triggerd by function logAnAction() -->
-              <span class="toLocation" id="actionLogParent">Posting To: gardenLog</span>
-            </b></p>
+                rel="popover"
+                data-trigger="click"
+                data-placement="bottom" 
+                data-content='By default all actions will post to gardenLog, If you wish to nest an action select "Log Action" under the desired post and the location will update.'
+                >[?]</a>
+            </p>
 
             <!--Default parent is gardenLog -->
             <input id="imputActionParentId" type="hidden" value="gardenLog">
@@ -142,16 +142,16 @@
             <h2>Quick Note</h2>
 
             <p>
+              <b><!-- default posting location is empty -->
+                <span class="toLocation" id="quickNoteParent">No location targeted</span>&nbsp;
+              </b>
               <a class="Q" 
-              rel="popover"
-              data-trigger="hover"
-              data-placement="left" 
-              data-content='To post a Quick Note you must either choose a location from the dropdown menu or select "Quick Note" under the desired post and the target location will update.'
-              >[?]</a>
-
-            <b><!-- default posting location is empty -->
-              <span class="toLocation" id="quickNoteParent">No location targeted</span><br>
-            </b></p>
+                rel="popover"
+                data-trigger="click"
+                data-placement="bottom" 
+                data-content='To post a Quick Note you must either choose a location from the dropdown menu or select "Quick Note" under the desired post and the target location will update.'
+                >[?]</a>
+            </p>
 
             <!--Default action is wait for imput from dropdown then set value-->
             <!-- this will be populated if a pass through post is activated  -->
@@ -196,6 +196,14 @@
             <h3>Crop Links</h3>
               <ul id="ulCropLinks">
               </ul>
+            <h3>Tools</h3>
+              <ul>
+                <li><a href="#myModal" role="button" data-toggle="modal">Give me a rundown of this app</a></li>
+                <li><a href="printView.html" target="_blank">Open Print View</a></li>
+                <!-- <li class="hidden-phone"><a id="hideShow_Show" class="hidden-phone">Show Delete Buttons</a> <a class="Q" rel="popover" data-trigger="click" data-placement="bottom" data-content='If you wish to delete a log entry, you can use this button to show all the red delete buttons. Upon click of a delete button the log entry will be removed immedeatly and cannot be retrieved. Use this carefully! When you are finished click on the "Hide Delete Buttons" link to ... hide the delete buttons.'>[?]</a>
+                  <a class="hideShow" id="hideShow_Hide"><br><b>Hide Delete Buttons</b></a>
+                </li> -->
+              </ul>
               &nbsp;
           </div>
 
@@ -208,13 +216,7 @@
 
           <div id="footer">
             <hr>
-            <p>Code by Christopher Fryman NSS2013 <a id="hideShow_Show" class="hidden-phone">[Show Delete Buttons]</a>
-              <a class="red hideShow" id="hideShow_Hide">[Hide Delete Buttons]</a> <a class="Q" 
-              rel="popover"
-              data-trigger="hover"
-              data-placement="top" 
-              data-content='If you wish to delete a log entry, you can use this button to show all the red delete buttons. The log entry will be deleted immedeatly and cannot be retrieved. Use this carefully! When you are finished click on the [Hide Delete Buttons] button to ... hide the delete buttons.'
-              >[?]</a></p>
+            <p>Code by Christopher Fryman NSS2013</p>
           </div>
 
         </div> <!-- END MAIN -->
@@ -222,5 +224,52 @@
       </div> <!-- END BODY ROW -->
 
     </div> <!--container-->
+
+
+    <!-- END FRAMEWORK BEGIN MODAL -->
+
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <h3>A <em>Quick</em> rundown</h3>
+      </div>
+      <div class="modal-body">
+        
+        <h3>Navagation</h3>         
+            <p>On the top of the page is the header with [links] to toggle a a form to enter data.</p>
+            <p>On the right is the main navagation. You can use this to zip all around the page via page views and crop links.</p>
+            <p>Under that is the tools. You can open a print view, and also access this quick rundown again.</p>
+
+        <h3>Entering Data</h3>
+            <p>To enter data into the field notes app, you use the appropriate form. There are Three types of logs that each have its own form, A Crop log, A Action Log and A Quick note Log. The buttons to open these forms can be found in the header in [links] surrouded by brackets, you will also find these at the bottom of most post types in the Crop view of your data.</p>
+            <p>Well what now? You could go willy nilly typing and posting all of the things, but its best to know what type of data each form expects from you and what its used for.</p> 
+        <h4>Crop Log</h4>
+            <p>The crop log is used for the inital plant entry. To post a entry you need to have the Title, The specific plant type, and something in the note field. Optonal is fields for harvest notes and flags. This is a good place to put little notes to remind you of the fact that okra is poisonous, or that you need to harvest a tomato after it is red.</p>
+        <h4>Action Log</h4>
+            <p>This is used to track actions and events related to your garden. It requires only a title and your notes to post. Optionally you can add the current weather, or note anything out of the ordinary (like a monsoon). There are also fields for tracking the tools or additives used, like tobasco and vodka for getting rid of bugs. The workers field is optional for tracking participation in a community garden.</p>
+        <h4>Quick Post</h4>
+            <p>The last and final type is a quick note log for easy and fast entry. This is where you will note from most often, as most are short and specific to a paticular plant. It can hold any sort of data, and can be nested under any crop or action. You could note the sucess of your tobasco and vodka treatment. or make note that the beets you chose were a bitter, and bad choice.</p>
+
+        <h3>Page Views</h3>
+        <h4>Crop View</h4>
+            <p>This is the default viewof your data. Here the crops automatically grab all the information relevant to it and nest this information underneith it. You can directly append to these data posts by clicking on the [links] and making a new log entry.<p> 
+        <h4>Chronological Views</h4>
+            <p>Chronological Oldest First -- What you would see when you click on the chronological view is all the crops arranged by date (oldest first of course). Once you start adding to your crop log this view will be filled automatically. The great thing that this offers is a psudo-internetual blog type view of your data. You can scroll through it like you would with any of the internets.</p> 
+            <p>Chronological Newest First -- This is the same data, arranged by date in the opposite order. Whats nice about this view is that if you know about when you posted something It can help you find it by utilizing assoicitave memory synapsas in your brain.</p>
+
+        <h4>Help</h4>
+            <p>If at any time you feel like you are utterly lost at sea, send me a message and I might be able to help <a href="mailto:farfromguam@gmail.com?Subject=Help%20me!">farfromguam@gmail.com</a> As allways I welcome your feedback and want to make this work for you.</p>
+
+        </div>
+      
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Thanks I got it</button>
+        <a href="mailto:farfromguam@gmail.com?Subject=Help%20me!" class="btn">I still have questions</a>
+      </div>
+
+    </div>
+
+    <!-- END MODAL -->
+
+
   </body>
 </html>
